@@ -1,16 +1,19 @@
 package it.polito.tdp.alien.model;
 import java.util.*;
-import java.util.Map;
 
 public class Model {
 	String p1Inserita;
 	String p2Inserita;
 	private Map <String, String> traduzioni;
+	private Map<String, List<String>> traduzioniMultiple;
+	List <String> traduzioniLista = new LinkedList<String>();
+	
 	
 	
 	public Model() {
 		super();
 		this.traduzioni = new TreeMap<String,String>();
+		this.traduzioniMultiple = new TreeMap<String, List<String>>();
 	}
 
 	/**
@@ -30,6 +33,30 @@ public class Model {
 		}
 		
 		traduzioni.put(p1Inserita, p2Inserita);
+	}
+	public void addParoleMultiple(String p1Inserita,String p2Inserita) {
+		p1Inserita.toLowerCase();
+		p2Inserita.toLowerCase();
+		if(contieneNumeri(p1Inserita)==true || contieneNumeri(p2Inserita)==true) {
+			throw new IllegalStateException("La parola inserita contiene numeri non solo caratteri alfabetici");
+		}
+		if(traduzioniMultiple.containsKey(p1Inserita)==true) {
+			traduzioniLista.add(p2Inserita);
+			traduzioniMultiple.put(p1Inserita, traduzioniLista);
+		}
+		else{
+			traduzioniLista.add(p2Inserita);
+			traduzioniMultiple.put(p1Inserita, traduzioniLista);
+		}
+		System.out.print(traduzioniMultiple);
+	}
+	public List<String> traduzioniMultipleMetodo(String p1Inserita) {
+		p1Inserita.toLowerCase();
+		if(contieneNumeri(p1Inserita)==true) {
+			throw new IllegalStateException("La parola inserita contiene numeri");
+			
+		}
+		return traduzioniMultiple.get(p1Inserita);
 	}
 	/**
 	 * Data una parola permette di cercare quella parola nella mappa, se presente da una traduzione altrimenti restituisce un eccezione.
